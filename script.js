@@ -47,6 +47,19 @@ async function fetchCitySuggestions(query) {
   }
 }
 
+// Generic debounce helper: delays calling func until delay ms have passed since the last call
+function debounce(func, delay) {
+  let timeoutId;
+  return function(...args) {
+    const context = this;
+    if (timeoutId) clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      timeoutId = null;
+      func.apply(context, args);
+    }, delay);
+  };
+}
+
 searchBtn.addEventListener('click', async () => {
   const city = cityInput.value.trim();
   const endpoint = 'https://api.openweathermap.org/data/2.5/weather';
