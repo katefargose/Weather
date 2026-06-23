@@ -29,6 +29,24 @@ function mapConditionToEmoji(main) {
   }
 }
 
+// Fetch city suggestions from OpenWeatherMap Geocoding API
+async function fetchCitySuggestions(query) {
+  if (!query || query.trim().length < 2) return;
+
+  const endpoint = 'https://api.openweathermap.org/geo/1.0/direct';
+  const url = `${endpoint}?q=${encodeURIComponent(query)}&limit=5&appid=${API_KEY}`;
+
+  try {
+    const res = await fetch(url);
+    const json = await res.json();
+    console.log('Geocoding suggestions:', json);
+    return json;
+  } catch (err) {
+    console.error('Error fetching city suggestions:', err);
+    return;
+  }
+}
+
 searchBtn.addEventListener('click', async () => {
   const city = cityInput.value.trim();
   const endpoint = 'https://api.openweathermap.org/data/2.5/weather';
