@@ -74,15 +74,18 @@ header h1 {
   padding: 14px 24px;
   border-radius: 8px;
   border: none;
-  background: var(--accent);
-  color: var(--text);
+  background: #f79cd6; 
+  color: #ffffff; /* white for readability */
   font-weight: 800;
   cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
 }
 
 #search-btn:hover {
-  filter: brightness(0.98);
-  transform: translateY(-1px);
+  filter: brightness(0.94);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.10);
 }
 
 #error-message {
@@ -109,6 +112,77 @@ header h1 {
   white-space: nowrap;
 }
 
+/* Weather result card styles */
+.weather-card-inner {
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(181, 234, 215, 0.35); /* soft tint of the accent */
+}
+
+.weather-main {
+  text-align: center;
+}
+
+.weather-city {
+  margin: 0;
+  font-family: 'Quicksand', system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 1.9rem; /* ~30px */
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.weather-temp {
+  font-weight: 700;
+  margin-left: 6px;
+  font-size: 1.4rem;
+}
+
+.weather-condition {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: rgba(51, 51, 51, 0.78); /* slightly muted */
+  text-transform: capitalize;
+  text-align: center;
+}
+
+.weather-details {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.weather-humidity,
+.weather-wind {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.6);
+  color: var(--text);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 700;
+  transition: transform 150ms ease-in-out, box-shadow 150ms ease-in-out;
+}
+
+.weather-humidity {
+  border: 2px solid #A8D8EA; /* soft blue */
+}
+
+.weather-wind {
+  border: 2px solid #FFE8A3; /* soft yellow */
+}
+
+.weather-humidity:hover,
+.weather-wind:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 18px rgba(20,30,40,0.06);
+}
+
 @media (max-width: 480px) {
   /* Stack input and button vertically on small screens */
   #search-section {
@@ -119,5 +193,19 @@ header h1 {
   /* Make children take full width when stacked */
   #search-section > * {
     width: 100%;
+  }
+
+  .weather-city {
+    font-size: 1.6rem;
+  }
+
+  .weather-temp {
+    font-size: 1.1rem;
+  }
+
+  .weather-details {
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
   }
 }
