@@ -142,9 +142,35 @@ if (suggestionsList) {
       const state = item.state ? `, ${item.state}` : '';
       const li = document.createElement('li');
       li.textContent = `${name}${state}${country ? ', ' + country : ''}`;
+
+      // When a suggestion is clicked: set the input, hide suggestions, and trigger the search
+      li.addEventListener('click', () => {
+        cityInput.value = name;
+        suggestionsList.innerHTML = '';
+        suggestionsList.style.display = 'none';
+        // Trigger the existing search button handler
+        if (typeof searchBtn.click === 'function') {
+          searchBtn.click();
+        }
+      });
+
       suggestionsList.appendChild(li);
     }
 
     suggestionsList.style.display = 'block';
   }, 400));
 }
+
+// Enter key handling on the city input: trigger the existing search when Enter is pressed
+cityInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    if (suggestionsList) {
+      suggestionsList.innerHTML = '';
+      suggestionsList.style.display = 'none';
+    }
+    if (typeof searchBtn.click === 'function') {
+      searchBtn.click();
+    }
+  }
+});
