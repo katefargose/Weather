@@ -2,6 +2,7 @@ const cityInput = document.getElementById('city-input');
 const searchBtn = document.getElementById('search-btn');
 const weatherResult = document.getElementById('weather-result');
 const errorMessage = document.getElementById('error-message');
+const suggestionsList = document.getElementById('suggestions-list');
 
 // Helper: map OpenWeatherMap "main" condition keywords to emojis
 function mapConditionToEmoji(main) {
@@ -112,3 +113,38 @@ searchBtn.addEventListener('click', async () => {
     console.error('Fetch error:', err);
   }
 });
+
+// Live suggestions: debounce input and fetch suggestions
+if (suggestionsList) {
+  cityInput.addEventListener('input', debounce(async () => {
+    const query = cityInput.value.trim();
+
+    if (!query || query.length < 2) {
+      suggestionsList.innerHTML = '';
+      suggestionsList.style.display = 'none';
+      return;
+    }
+
+    const results = await fetchCitySuggestions(query) || [];
+
+    // Clear existing items
+    suggestionsList.innerHTML = '';
+
+    if (!results.length) {
+      suggestionsList.style.display = 'none';
+      return;
+    }
+
+    // Populate list
+    for (const item of results) {
+      const name = item.name || '';
+      const country = item.country || '';
+      const state = item.state ? `, ${item.state}` : '';
+      const li = document.createElement('li');
+      li.textContent = `${name}${state}${country ? ', ' + country : ''}`;
+      suggestionsList.appendChild(li);
+    }
+
+    suggestionsList.style.display = 'block';
+  }, 400));
+}
