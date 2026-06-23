@@ -125,17 +125,35 @@ if (suggestionsList) {
       return;
     }
 
-    const results = await fetchCitySuggestions(query) || [];
+    const resultsRaw = await fetchCitySuggestions(query) || [];
+
+    // De-duplicate by name + country (case-insensitive), keep first occurrence
+    const seen = new Set();
+    const results = [];
+    for (const item of resultsRaw) {
+      const nameKey = (item.name || '').toLowerCase();
+      const countryKey = (item.country || '').toLowerCase();
+      const key = `${nameKey}|${countryKey}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        results.push(item);
+      }
+    }
 
     // Clear existing items
     suggestionsList.innerHTML = '';
 
     if (!results.length) {
-      suggestionsList.style.display = 'none';
+      // No matches found after a successful fetch -> show a single muted message
+      const li = document.createElement('li');
+      li.textContent = 'No matching cities found';
+      li.classList.add('no-results');
+      suggestionsList.appendChild(li);
+      suggestionsList.style.display = 'block';
       return;
     }
 
-    // Populate list
+    // Populate list with de-duplicated results
     for (const item of results) {
       const name = item.name || '';
       const country = item.country || '';

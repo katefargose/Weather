@@ -216,6 +216,12 @@ header h1 {
   background: rgba(181,234,215,0.18); /* very light pastel accent */
 }
 
+#suggestions-list .no-results {
+  color: #999999;
+  cursor: default;
+  background: transparent;
+}
+
 @media (max-width: 480px) {
   /* Stack input and button vertically on small screens */
   #search-section {
