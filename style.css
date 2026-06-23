@@ -52,6 +52,7 @@ header h1 {
   display: flex;
   gap: 10px;
   margin-bottom: 16px;
+  position: relative; /* container for absolutely-positioned suggestions */
 }
 
 #city-input {
@@ -183,6 +184,38 @@ header h1 {
   box-shadow: 0 6px 18px rgba(20,30,40,0.06);
 }
 
+/* Suggestions dropdown (hidden by default) */
+#suggestions-list {
+  display: none; /* shown via JS later */
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(20,30,40,0.08);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  z-index: 50;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+#suggestions-list li {
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+
+#suggestions-list li:last-child {
+  border-bottom: none;
+}
+
+#suggestions-list li:hover {
+  background: rgba(181,234,215,0.18); /* very light pastel accent */
+}
+
 @media (max-width: 480px) {
   /* Stack input and button vertically on small screens */
   #search-section {
@@ -207,5 +240,10 @@ header h1 {
     flex-direction: column;
     gap: 8px;
     align-items: center;
+  }
+
+  #suggestions-list {
+    left: 0;
+    right: 0;
   }
 }
