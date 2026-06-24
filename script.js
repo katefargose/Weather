@@ -34,8 +34,7 @@ function mapConditionToEmoji(main) {
 async function fetchCitySuggestions(query) {
   if (!query || query.trim().length < 2) return;
 
-  const endpoint = 'https://api.openweathermap.org/geo/1.0/direct';
-  const url = `${endpoint}?q=${encodeURIComponent(query)}&limit=5&appid=${API_KEY}`;
+  const url = `/api/geocode?q=${encodeURIComponent(query)}`;
 
   try {
     const res = await fetch(url);
@@ -63,8 +62,7 @@ function debounce(func, delay) {
 
 searchBtn.addEventListener('click', async () => {
   const city = cityInput.value.trim();
-  const endpoint = 'https://api.openweathermap.org/data/2.5/weather';
-  const url = `${endpoint}?q=${encodeURIComponent(city)}&units=metric&appid=${API_KEY}`;
+  const url = `/api/weather?city=${encodeURIComponent(city)}`;
 
   try {
     const response = await fetch(url);
@@ -191,4 +189,16 @@ cityInput.addEventListener('keydown', (e) => {
       searchBtn.click();
     }
   }
+});
+
+// Close suggestions when clicking outside the input or suggestions list
+document.addEventListener('click', (e) => {
+  const target = e.target;
+  if (!suggestionsList) return;
+  // If click is inside the input or the suggestions list, do nothing
+  if (cityInput.contains(target) || suggestionsList.contains(target)) return;
+
+  // Otherwise hide and clear suggestions
+  suggestionsList.innerHTML = '';
+  suggestionsList.style.display = 'none';
 });
